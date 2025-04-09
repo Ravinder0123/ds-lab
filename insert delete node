@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+void printList(struct Node* n) {
+    while (n != NULL) {
+        printf(" %d ", n->data);
+        n = n->next;
+    }
+}
+
+void deletefirst() {
+    if (head != NULL)
+        head = head->next;
+}
+
+void deletelast() {
+    if (head == NULL || head->next == NULL) {
+        head = NULL;
+        return;
+    }
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+void insertAtBeginning(int value) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    if (newNode == NULL) return;
+
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+void insertAtEnd(int value) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    if (newNode == NULL) return;
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+}
+
+void insertAtPosition(int value, int position) {
+    if (position <= 1) {
+        insertAtBeginning(value);
+        return;
+    }
+
+    struct Node* newNode = malloc(sizeof(struct Node));
+    if (newNode == NULL) return;
+
+    newNode->data = value;
+
+    struct Node* temp = head;
+    for (int i = 2; i < position; i++) {
+        if (temp->next != NULL) {
+            temp = temp->next;
+        } else {
+            break; // position is beyond list length
+        }
+    }
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+    struct Node* temp = head;
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = NULL;
+}
+
+void deletemiddle(int pos) {
+    if (pos <= 1 || head == NULL || head->next == NULL) {
+        deletefirst();  // treat as delete first
+        return;
+    }
+
+    struct Node* temp = head;
+    for (int i = 2; i < pos; i++) {
+        if (temp->next != NULL) {
+            temp = temp->next;
+        } else {
+            return; // position out of bounds
+        }
+    }
+
+    if (temp->next != NULL)
+        temp->next = temp->next->next;
+}
+
+int main() {
+    struct Node* second = NULL;
+    struct Node* third = NULL;
+
+    head = (struct Node*)malloc(sizeof(struct Node));
+    second = (struct Node*)malloc(sizeof(struct Node));
+    third = (struct Node*)malloc(sizeof(struct Node));
+
+    head->data = 1;
+    head->next = second;
+
+    second->data = 2;
+    second->next = third;
+
+    third->data = 3;
+    third->next = NULL;
+
+    printf("Original list:");
+    printList(head);
+
+    deletefirst();
+    printf("\nAfter deleting first:");
+    printList(head);
+
+    deletelast();
+    printf("\nAfter deleting last:");
+    printList(head);
+
+    int position = 2;
+    deletemiddle(position);
+    printf("\nAfter deleting middle at position %d:", position);
+    printList(head);
+
+    return 0;
+}
